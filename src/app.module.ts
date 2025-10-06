@@ -1,9 +1,11 @@
 import { Module } from "@nestjs/common";
-import {ConfigModule} from '@nestjs/config'
-import { APP_FILTER } from "@nestjs/core";
-import { PrismaModule } from "./database/prisma.module";
-import { UsersModule } from "./modules/users/users.module";
+import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER, APP_GUARD } from "@nestjs/core";
 import { HttpExceptionFilter } from "./common/filters/http-exception.filter";
+import { PrismaModule } from "./database/prisma.module";
+import { AuthModule } from "./modules/auth/auth.module";
+import { JwtAuthGuard } from "./modules/auth/guards/jwt-auth.guard";
+import { UsersModule } from "./modules/users/users.module";
 
 
 @Module({
@@ -13,12 +15,19 @@ import { HttpExceptionFilter } from "./common/filters/http-exception.filter";
             envFilePath:   `.env.${process.env.NODE_ENV || 'development'}`
         }),
         PrismaModule,
-        UsersModule
+        UsersModule,
+        AuthModule
     ],
     providers: [
+        // Global exception filter
         {
             provide: APP_FILTER,
             useClass: HttpExceptionFilter
+        },
+        // All routes protected by default. 
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard
         }
     ]
 })

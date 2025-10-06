@@ -36,6 +36,9 @@ let UserService = class UserService {
         }
         return (0, class_transformer_1.plainToInstance)(user_response_dto_1.UserResponseDto, user, { excludeExtraneousValues: true });
     }
+    async findByEmailWithPassword(email) {
+        return this.userRepository.findByEmail(email);
+    }
     async findById(id) {
         const user = await this.userRepository.findById(id);
         if (!user) {

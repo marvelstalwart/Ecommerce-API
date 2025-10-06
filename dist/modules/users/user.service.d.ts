@@ -6,5 +6,14 @@ export declare class UserService {
     constructor(userRepository: UserRepository);
     createUser(data: CreateUserDto): Promise<User>;
     findByEmail(email: string): Promise<User | null>;
+    findByEmailWithPassword(email: string): Promise<{
+        firstName: string;
+        lastName: string;
+        email: string;
+        password: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+    } | null>;
     findById(id: string): Promise<User | null>;
 }
