@@ -10,15 +10,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         constructor(private reflector: Reflector) {
             super()
         }
-
+        // Get the decorators on the controller - Allows @Public routes to pass without validation
         canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
             const isPublic= this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
                 context.getHandler(),
                 context.getClass()
             ])
             if (isPublic) {
+                // Skip validation
                 return true
             }
+            // Validate
             return super.canActivate(context)
         }
 }

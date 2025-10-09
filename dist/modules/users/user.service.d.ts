@@ -7,11 +7,12 @@ export declare class UserService {
     createUser(data: CreateUserDto): Promise<User>;
     findByEmail(email: string): Promise<User | null>;
     findByEmailWithPassword(email: string): Promise<{
+        password: string;
         firstName: string;
         lastName: string;
         email: string;
-        password: string;
         id: string;
+        shoppingCartId: string | null;
         createdAt: Date;
         updatedAt: Date;
     } | null>;

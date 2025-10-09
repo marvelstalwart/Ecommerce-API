@@ -33,6 +33,7 @@ export class UserService {
         }
         return plainToInstance(UserResponseDto, user, {excludeExtraneousValues: true});
     }
+    
     // Password to be used for user auth
     async findByEmailWithPassword(email: string) {
         return this.userRepository.findByEmail(email)

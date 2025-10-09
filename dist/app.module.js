@@ -14,6 +14,7 @@ const http_exception_filter_1 = require("./common/filters/http-exception.filter"
 const prisma_module_1 = require("./database/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
+const product_module_1 = require("./modules/products/product.module");
 const users_module_1 = require("./modules/users/users.module");
 let AppModule = class AppModule {
 };
@@ -23,22 +24,23 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: `.env.${process.env.NODE_ENV || 'development'}`
+                envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
             }),
             prisma_module_1.PrismaModule,
             users_module_1.UsersModule,
-            auth_module_1.AuthModule
+            auth_module_1.AuthModule,
+            product_module_1.ProductModule,
         ],
         providers: [
             {
                 provide: core_1.APP_FILTER,
-                useClass: http_exception_filter_1.HttpExceptionFilter
+                useClass: http_exception_filter_1.HttpExceptionFilter,
             },
             {
                 provide: core_1.APP_GUARD,
-                useClass: jwt_auth_guard_1.JwtAuthGuard
-            }
-        ]
+                useClass: jwt_auth_guard_1.JwtAuthGuard,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

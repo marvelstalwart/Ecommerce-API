@@ -52,7 +52,7 @@ export class AuthController {
     }
     @Public()
     @Post('login')
-    @HttpCode(HttpStatus.OK)
+    @HttpCode(HttpStatus.OK) 
     @ApiOperation({summary: 'Login user'})
     @ApiResponse({
         status: 200,

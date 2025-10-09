@@ -11,11 +11,12 @@ export declare class AuthService {
     constructor(jwtService: JwtService, configService: ConfigService, userService: UserService);
     createUser(data: CreateUserDto): Promise<AuthResponseDto>;
     validateUser(email: string, pass: string): Promise<{
-        id: string;
-        email: string;
+        password: string;
         firstName: string;
         lastName: string;
-        password: string;
+        email: string;
+        id: string;
+        shoppingCartId: string | null;
         createdAt: Date;
         updatedAt: Date;
     }>;

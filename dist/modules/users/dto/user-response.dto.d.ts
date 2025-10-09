@@ -3,6 +3,7 @@ export declare class UserResponseDto {
     firstName: string;
     lastName: string;
     email: string;
+    shoppingCartId: string;
     createdAt: Date;
     updatedAt: Date;
     password: string;

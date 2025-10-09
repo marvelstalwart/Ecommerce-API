@@ -17,6 +17,7 @@ class UserResponseDto {
     firstName;
     lastName;
     email;
+    shoppingCartId;
     createdAt;
     updatedAt;
     password;
@@ -45,6 +46,11 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], UserResponseDto.prototype, "email", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_transformer_1.Exclude)(),
+    __metadata("design:type", String)
+], UserResponseDto.prototype, "shoppingCartId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
     (0, class_transformer_1.Expose)(),

@@ -12,6 +12,7 @@ export class CreateUserDto {
         example: 'Marvel',
         description: 'User first name'
     })
+    
     @IsString()
     @IsNotEmpty({message: 'First name is required'})
     @MinLength(2, {message: 'First name must be at least 2 characters'})
@@ -21,6 +22,7 @@ export class CreateUserDto {
         example: 'Stalwart',
         description: 'User last name'
     })
+
     @IsString()
     @IsNotEmpty({message: 'Last name is required'})
     @MinLength(2, {message: 'Last name must be at least 2 characters'})

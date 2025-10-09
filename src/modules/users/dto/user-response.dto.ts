@@ -19,6 +19,10 @@ export class UserResponseDto {
     email: string;
 
     @ApiProperty()
+    @Exclude()
+    shoppingCartId: string; 
+
+    @ApiProperty()
     @Expose()
     createdAt: Date;
 
