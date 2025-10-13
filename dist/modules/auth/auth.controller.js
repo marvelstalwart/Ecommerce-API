@@ -49,19 +49,19 @@ __decorate([
     (0, common_1.Post)('register'),
     (0, public_decorator_1.Public)(),
     (0, common_1.HttpCode)(common_1.HttpStatus.CREATED),
-    (0, swagger_1.ApiOperation)({ summary: "Create user" }),
+    (0, swagger_1.ApiOperation)({ summary: 'Create user' }),
     (0, swagger_1.ApiResponse)({
         status: 201,
-        description: "User created successfully",
-        type: auth_response_dto_1.AuthResponseDto
+        description: 'User created successfully',
+        type: auth_response_dto_1.AuthResponseDto,
     }),
     (0, swagger_1.ApiResponse)({
         status: common_1.HttpStatus.CONFLICT,
-        description: 'Conflict - user with this email exists'
+        description: 'Conflict - user with this email exists',
     }),
     (0, swagger_1.ApiResponse)({
         status: common_1.HttpStatus.BAD_REQUEST,
-        description: 'Bad Request - validation failed!'
+        description: 'Bad Request - validation failed!',
     }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -76,11 +76,11 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'User logged in successfully',
-        type: auth_response_dto_1.AuthResponseDto
+        type: auth_response_dto_1.AuthResponseDto,
     }),
     (0, swagger_1.ApiResponse)({
         status: 401,
-        description: 'Invalid credentials'
+        description: 'Invalid credentials',
     }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -97,11 +97,11 @@ __decorate([
     (0, swagger_1.ApiResponse)({
         status: 200,
         description: 'Tokens refreshed successfully',
-        type: auth_response_dto_1.AuthResponseDto
+        type: auth_response_dto_1.AuthResponseDto,
     }),
     (0, swagger_1.ApiResponse)({
         status: 401,
-        description: 'Invalid refresh token'
+        description: 'Invalid refresh token',
     }),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
@@ -115,7 +115,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Logout user' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'User logged out successfully'
+        description: 'User logged out successfully',
     }),
     __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
     __metadata("design:type", Function),
@@ -128,7 +128,7 @@ __decorate([
     (0, swagger_1.ApiOperation)({ summary: ' Get current user profile' }),
     (0, swagger_1.ApiResponse)({
         status: 200,
-        description: 'User profile retrieved successfully'
+        description: 'User profile retrieved successfully',
     }),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
@@ -136,7 +136,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 exports.AuthController = AuthController = __decorate([
-    (0, swagger_1.ApiTags)('auth'),
+    (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);

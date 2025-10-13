@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { PrismaModule } from './database/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
+import { CartModule } from './modules/cart/cart.module';
 import { ProductModule } from './modules/products/product.module';
 import { UsersModule } from './modules/users/users.module';
 @Module({
@@ -17,6 +18,7 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     AuthModule,
     ProductModule,
+    CartModule,
   ],
   providers: [
     // Global exception filter

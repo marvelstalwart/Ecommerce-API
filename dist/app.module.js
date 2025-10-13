@@ -14,6 +14,7 @@ const http_exception_filter_1 = require("./common/filters/http-exception.filter"
 const prisma_module_1 = require("./database/prisma.module");
 const auth_module_1 = require("./modules/auth/auth.module");
 const jwt_auth_guard_1 = require("./modules/auth/guards/jwt-auth.guard");
+const cart_module_1 = require("./modules/cart/cart.module");
 const product_module_1 = require("./modules/products/product.module");
 const users_module_1 = require("./modules/users/users.module");
 let AppModule = class AppModule {
@@ -30,6 +31,7 @@ exports.AppModule = AppModule = __decorate([
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
             product_module_1.ProductModule,
+            cart_module_1.CartModule,
         ],
         providers: [
             {
