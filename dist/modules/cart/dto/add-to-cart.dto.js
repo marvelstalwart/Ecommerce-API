@@ -9,32 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateCartDto = void 0;
-const class_validator_1 = require("class-validator");
+exports.AddToCartDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_transformer_1 = require("class-transformer");
-const create_cart_item_dto_1 = require("./create-cart-item.dto");
-class CreateCartDto {
-    userId;
-    items;
+const class_validator_1 = require("class-validator");
+class AddToCartDto {
+    productId;
+    quantity;
 }
-exports.CreateCartDto = CreateCartDto;
+exports.AddToCartDto = AddToCartDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         example: 'c0a80123-7b5d-4f6b-bc2a-123456789abc',
         description: 'Unique identifier of cart owner',
     }),
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
-], CreateCartDto.prototype, "userId", void 0);
+], AddToCartDto.prototype, "productId", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
-        type: [create_cart_item_dto_1.CreateCartItemDto],
+        example: 2,
+        description: 'Quantity of product to add to the cart',
     }),
-    (0, class_validator_1.IsArray)(),
-    (0, class_validator_1.ValidateNested)({ each: true }),
-    (0, class_transformer_1.Type)(() => create_cart_item_dto_1.CreateCartItemDto),
-    __metadata("design:type", Array)
-], CreateCartDto.prototype, "items", void 0);
-//# sourceMappingURL=create-cart.dto.js.map
+    (0, class_validator_1.IsInt)(),
+    (0, class_validator_1.Min)(1),
+    __metadata("design:type", Number)
+], AddToCartDto.prototype, "quantity", void 0);
+//# sourceMappingURL=add-to-cart.dto.js.map

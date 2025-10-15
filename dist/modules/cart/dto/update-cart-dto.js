@@ -9,32 +9,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateCartDto = void 0;
-const class_validator_1 = require("class-validator");
+exports.UpdateCartDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_transformer_1 = require("class-transformer");
+const class_validator_1 = require("class-validator");
 const create_cart_item_dto_1 = require("./create-cart-item.dto");
-class CreateCartDto {
-    userId;
+class UpdateCartDto {
     items;
 }
-exports.CreateCartDto = CreateCartDto;
-__decorate([
-    (0, swagger_1.ApiProperty)({
-        example: 'c0a80123-7b5d-4f6b-bc2a-123456789abc',
-        description: 'Unique identifier of cart owner',
-    }),
-    (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], CreateCartDto.prototype, "userId", void 0);
+exports.UpdateCartDto = UpdateCartDto;
 __decorate([
     (0, swagger_1.ApiProperty)({
         type: [create_cart_item_dto_1.CreateCartItemDto],
+        required: false,
+        description: 'Update items in cart',
     }),
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsArray)(),
     (0, class_validator_1.ValidateNested)({ each: true }),
     (0, class_transformer_1.Type)(() => create_cart_item_dto_1.CreateCartItemDto),
     __metadata("design:type", Array)
-], CreateCartDto.prototype, "items", void 0);
-//# sourceMappingURL=create-cart.dto.js.map
+], UpdateCartDto.prototype, "items", void 0);
+//# sourceMappingURL=update-cart-dto.js.map

@@ -2,19 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, ShoppingCart } from 'generated/prisma';
 import { PrismaService } from '../../database/prisma.service';
 import { CreateCartDto } from './dto/create-cart.dto';
+import { UpdateCartDto } from './dto/update-cart-dto';
 
 // Define a type that includes cart items and associated products
+
+type BaseCartInclude = {
+  items: {
+    include: {
+      product: true;
+    };
+  };
+};
 export type CartWithItems = Prisma.ShoppingCartGetPayload<{
-  include: {
-    items: {
-      include: {
-        product: true;
+  include: BaseCartInclude & {
+    user: {
+      select: {
+        id: true;
+        email: true;
+        firstName: true;
+        lastName: true;
       };
     };
-    user: true;
   };
 }>;
-
+export type Cart = Prisma.ShoppingCartGetPayload<{
+  include: BaseCartInclude;
+}>;
 @Injectable()
 export class CartRepository {
   constructor(private readonly prisma: PrismaService) {}
@@ -25,7 +38,7 @@ export class CartRepository {
     try {
       return await this.prisma.shoppingCart.create({
         data: {
-          userId: createCartDto.userId,
+          userId: createCartDto.userId as string,
           items: {
             create: createCartDto.items.map((item) => ({
               productId: item.productId,
@@ -39,7 +52,14 @@ export class CartRepository {
               product: true,
             },
           },
-          user: true,
+          user: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
         },
       });
     } catch (error) {
@@ -49,7 +69,7 @@ export class CartRepository {
 
   // Find cart by user ID
 
-  async findByUserId(userId: string): Promise<CartWithItems | null> {
+  async findByUserId(userId: string): Promise<Cart | null> {
     return this.prisma.shoppingCart.findUnique({
       where: { userId: userId },
       include: {
@@ -58,7 +78,7 @@ export class CartRepository {
             product: true,
           },
         },
-        user: true,
+        // user: true,
       },
     });
   }
@@ -83,7 +103,7 @@ export class CartRepository {
 
   async update(
     cartId: string,
-    updateCartDto: Partial<CartWithItems>,
+    updateCartDto: UpdateCartDto,
   ): Promise<CartWithItems> {
     return this.prisma.$transaction(async (prisma) => {
       const existingItems = await prisma.cartItem.findMany({
@@ -125,6 +145,85 @@ export class CartRepository {
             },
           },
           user: true,
+        },
+      }) as Promise<CartWithItems>;
+    });
+  }
+
+  async updateItemQuantity(
+    cartId: string,
+    productId: string,
+    quantity: number,
+  ): Promise<CartWithItems> {
+    return this.prisma.$transaction(async (prisma) => {
+      const existingItem = await prisma.cartItem.findFirst({
+        where: {
+          cartId,
+          productId,
+        },
+      });
+      if (existingItem) {
+        await prisma.cartItem.update({
+          where: { id: existingItem.id },
+          data: {
+            quantity: existingItem.quantity + quantity,
+          },
+        });
+      } else {
+        await prisma.cartItem.create({
+          data: {
+            cartId,
+            productId,
+            quantity,
+          },
+        });
+      }
+
+      return prisma.shoppingCart.findUnique({
+        where: { id: cartId },
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+      }) as Promise<CartWithItems>;
+    });
+  }
+  async removeItem(cartId: string, productId: string): Promise<CartWithItems> {
+    return this.prisma.$transaction(async (prisma) => {
+      await prisma.cartItem.deleteMany({
+        where: {
+          cartId,
+          productId,
+        },
+      });
+
+      return prisma.shoppingCart.findUnique({
+        where: { id: cartId },
+        include: {
+          items: {
+            include: {
+              product: true,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              email: true,
+              firstName: true,
+              lastName: true,
+            },
+          },
         },
       }) as Promise<CartWithItems>;
     });
@@ -230,20 +329,5 @@ export class CartRepository {
     return cart.items.reduce((total, item) => {
       return total + item.product.price * item.quantity;
     }, 0);
-  }
-
-  // Find or create cart for user
-
-  async findOrCreate(userId: string): Promise<CartWithItems> {
-    let cart = await this.findByUserId(userId);
-
-    if (!cart) {
-      cart = await this.create({
-        userId,
-        items: [],
-      });
-    }
-
-    return cart;
   }
 }

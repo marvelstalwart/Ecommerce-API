@@ -1,4 +1,4 @@
-import { IsArray, IsUUID, ValidateNested } from 'class-validator';
+import { IsArray, IsOptional, IsUUID, ValidateNested } from 'class-validator';
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -10,7 +10,8 @@ export class CreateCartDto {
     description: 'Unique identifier of cart owner',
   })
   @IsUUID()
-  userId: string;
+  @IsOptional()
+  userId?: string;
   @ApiProperty({
     type: [CreateCartItemDto],
   })

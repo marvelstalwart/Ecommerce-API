@@ -1,5 +1,5 @@
 import { CreateCartItemDto } from './create-cart-item.dto';
 export declare class CreateCartDto {
-    userId: string;
+    userId?: string;
     items: CreateCartItemDto[];
 }

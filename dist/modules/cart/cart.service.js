@@ -12,12 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartService = void 0;
 const common_1 = require("@nestjs/common");
 const cart_repository_1 = require("./cart.repository");
+const cart_response_dto_1 = require("./dto/cart-response.dto");
 let CartService = class CartService {
     cartRepository;
     constructor(cartRepository) {
         this.cartRepository = cartRepository;
     }
     async createCart(createCartDto) {
+        const existingCart = await this.cartRepository.findByUserId(createCartDto.userId);
+        if (existingCart) {
+            return existingCart;
+        }
         return this.cartRepository.create(createCartDto);
     }
     async getCartByUserId(userId) {
@@ -32,14 +37,34 @@ let CartService = class CartService {
     async getTotalPrice(cartId) {
         return this.cartRepository.getTotalPrice(cartId);
     }
+    async updateItemQuantity(cartId, productId, quantity) {
+        return this.cartRepository.updateItemQuantity(cartId, productId, quantity);
+    }
+    async removeItemFromCart(cartId, productId) {
+        return this.cartRepository.removeItem(cartId, productId);
+    }
     async clearCart(userId) {
         return this.cartRepository.clearCart(userId);
     }
     async updateCart(cartId, updateCartDto) {
-        return this.cartRepository.update(cartId, updateCartDto);
+        const updatedCart = await this.cartRepository.update(cartId, updateCartDto);
+        return this.buildCartResponse(updatedCart);
     }
     async deleteCart(cartId) {
         return this.cartRepository.delete(cartId);
+    }
+    async buildCartResponse(cart) {
+        const [itemCount, totalPrice, totalQuantity] = await Promise.all([
+            this.cartRepository.getItemCount(cart.id),
+            this.cartRepository.getTotalPrice(cart.id),
+            this.cartRepository.getTotalQuantity(cart.id),
+        ]);
+        return new cart_response_dto_1.CartResponseDto({
+            ...cart,
+            itemCount,
+            totalPrice,
+            totalQuantity,
+        });
     }
 };
 exports.CartService = CartService;
